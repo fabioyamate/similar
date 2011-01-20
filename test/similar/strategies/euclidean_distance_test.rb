@@ -6,16 +6,16 @@ class TestEuclideanDistance < MiniTest::Unit::TestCase
 
   def setup
     collection = movie_crititcs_dataset
-    @pearson = Similar::Strategies::EuclideanDistance.new(collection)
+    @euclidean = Similar::Strategies::EuclideanDistance.new(collection)
   end
 
   def test_calculate_distance_between_two_points
-    d = @pearson.distance([4.5, 1], [4, 2])
+    d = @euclidean.distance([4.5, 1], [4, 2])
     assert_equal 1.118033988749895, d
   end
 
   def test_matches_collection_between_two_entries
-    m = @pearson.matches("Gene Seymour", "Michael Phillips")
+    m = @euclidean.matches("Gene Seymour", "Michael Phillips")
 
     assert_includes m, "Lady in the Water"
     assert_includes m, "Superman Returns"
@@ -24,7 +24,7 @@ class TestEuclideanDistance < MiniTest::Unit::TestCase
   end
 
   def test_similarity
-    d = @pearson.similarity("Lisa Rose", "Gene Seymour")
+    d = @euclidean.similarity("Lisa Rose", "Gene Seymour")
     assert_equal 0.29429805508554946, d
   end
 
