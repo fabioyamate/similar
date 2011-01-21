@@ -22,6 +22,8 @@ module Similar
         d == 0 ? 0 : num/d
       end
 
+      alias_method :similarity, :distance
+
       private
 
       def sum(p)
