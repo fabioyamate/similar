@@ -1,34 +1,35 @@
 module Similar
   module Strategies
     class EuclideanDistance
-      def initialize(prefs)
-        @prefs = prefs
+      InvalidDimension = Class.new(StandardError)
+
+      def self.distance(p, q)
+        raise InvalidDimension if p.size != q.size
+        squares = p.zip(q).map { |(pn, qn)| (pn - qn)**2 }
+        sum = 0.0
+        squares.each { |n| sum += n }
+        Math.sqrt(sum)
       end
 
-      def distance(p1, p2)
-        Math.hypot(p1[0] - p2[0], p1[1] - p2[1])
-      end
-
-      def similarity(p1, p2)
-        matches = matches(p1, p2)
-        return 0 if matches.empty?
-
-        puts matches
-        sum = 0
-        matches.each_key do |k|
-          sum += (@prefs[p1][k] - @prefs[p2][k])**2
-        end
+      def self.magnitude(p)
+        sum = 0.0
+        p.each { |pn| sum += pn**2 }
         sum
-
-        1/(1 + Math.sqrt(sum))
       end
 
-      def matches(p1, p2)
-        map = {}
-        @prefs[p1].each_key do |i|
-          map[i] = 1 if @prefs[p2][i]
+      # TODO: move from here, this is not responsability of Euclidean algorithm
+      def self.normalize(p, q)
+        intersection = (p.keys & q.keys)
+        vp, vq = Array.new(intersection.size), Array.new(intersection.size)
+        intersection.each_with_index do |k,i|
+          vp[i] = p[k]
+          vq[i] = q[k]
         end
-        map
+        [vp, vq]
+      end
+
+      def self.similarity(p, q)
+        1/(1 + self.distance(p, q))
       end
     end
   end
