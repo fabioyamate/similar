@@ -45,7 +45,7 @@ class EuclideanDistanceTest < MiniTest::Unit::TestCase
   end
 
   def test_raise_error_when_different_dimension
-    assert_raises Similar::Strategies::EuclideanDistance::InvalidDimension do
+    assert_raises Similar::Strategies::InvalidDimension do
       @euclidean.distance([0, 0, 0], [1])
     end
   end
