@@ -1,3 +1,6 @@
+require 'bundler'
+Bundler::GemHelper.install_tasks
+
 # encoding: UTF-8
 require 'rake'
 require 'rake/testtask'
