@@ -1,0 +1,13 @@
+Some things to work on.
+
+TODO
+====
+
+* improve performance for similarity calculation
+* add callbacks to trigger updates in similarity
+* run similarity updates at background
+* create configuration for similar, in order to avoid specifing every time strategy
+* create migrations to store similarities
+* scoped similarities, current just one is allowed
+* write documentation
+* validations on simiarity_on options
