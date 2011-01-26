@@ -83,6 +83,44 @@ class SimilarityAssociationTest < ActiveRecord::TestCase
     assert_in_delta 0.89, toby.similarity_with(claudia), 0.01
   end
 
+  def test_returns_empty_matches_if_no_record_to_compare
+    toby = build_toby_reviews
+    assert_empty toby.top_matches
+  end
+
+  def test_return_limited_results_for_top_matches
+    toby = build_toby_reviews
+    build_lisa_reviews
+    build_gene_reviews
+    assert_equal 1, toby.top_matches(1).count
+  end
+
+
+  def test_ignores_top_matches_count_if_have_less_records_than_it
+    toby = build_toby_reviews
+    build_lisa_reviews
+    build_gene_reviews
+    assert_equal 2, toby.top_matches(10).count
+  end
+
+  def test_return_top_matches_with_euclidean_distance
+    toby = build_toby_reviews
+    lisa = build_lisa_reviews
+    gene = build_gene_reviews
+    michael = build_michael_reviews
+    claudia = build_claudia_reviews
+    mick = build_mick_reviews
+    jack = build_jack_reviews
+
+    matches = toby.top_matches
+
+    assert_equal 5, matches.count
+    assert_kind_of User, matches.first
+    assert_equal mick, matches.first
+    assert_equal claudia, matches.at(2)
+    refute_includes matches, gene
+  end
+
   # TODO: extract this factories to outside
   def build_lisa_reviews
     user = User.create(:name => 'Lisa Rose')

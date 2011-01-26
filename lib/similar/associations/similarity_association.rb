@@ -35,6 +35,20 @@ module Similar
 
         reflection.options[:strategy].similarity(p, q)
       end
+
+      def top_matches(count=5)
+        # TODO: move to a pre-calculation for similarity
+        users = User.all(:conditions => ['id != ?', self.id])
+        return users if users.count <= count
+
+        # process similarity with every user
+        matches = users.map do |user|
+          [self.similarity_with(user), user]
+        end.sort_by(&:first).last(count).reverse
+
+        # retrieve only users
+        matches.map(&:last)
+      end
     end
   end
 end
